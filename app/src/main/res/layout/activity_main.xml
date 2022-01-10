@@ -5,6 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+<<<<<<< Updated upstream
+=======
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/foldersRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="75dp"
+        android:layout_height="69dp"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/btn_plus" />
+>>>>>>> Stashed changes
 
     <TextView
         android:layout_width="wrap_content"
