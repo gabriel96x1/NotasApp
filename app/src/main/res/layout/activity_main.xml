@@ -11,10 +11,10 @@
         android:layout_height="match_parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="75dp"
+        android:layout_height="69dp"
         android:layout_gravity="bottom|right"
-        android:src="@android:drawable/btn_plus"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:src="@android:drawable/btn_plus" />
 
 </FrameLayout>

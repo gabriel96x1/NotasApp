@@ -1,24 +1,21 @@
 package com.another.notasapp;
 
-import static java.security.AccessController.getContext;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import java.security.AccessController;
+import com.another.notasapp.adapters.FolderNotesAdapter;
+import com.another.notasapp.adapters.NotesAdapter;
+import com.another.notasapp.models.entity.Notes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class recyclerNotas extends AppCompatActivity {
     private RecyclerView rView;
     private NotesAdapter rAdapter;
-    private static final String[] myDataSet = {
-            "PHP",
-            "Javascript",
-            "Go",
-            "Python"
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +24,18 @@ public class recyclerNotas extends AppCompatActivity {
 
         rView = findViewById(R.id.recyclerViewNotas);
 
-        // Esta línea mejora el rendimiento, si sabemos que el contenido
-        // no va a afectar al tamaño del RecyclerView
-        rView.setHasFixedSize(true);
+        List<Notes> dummyData = new ArrayList<>();
+        Notes Notes = new Notes();
+        Notes Notes2 = new Notes();
+        Notes.setName("Nuevo nota");
+        Notes2.setName("Otro nota");
+        dummyData.add(Notes);
+        dummyData.add(Notes2);
 
-        // Nuestro RecyclerView usará un linear layout manager
-        GridLayoutManager layoutManager = new GridLayoutManager();
-        rView.setLayoutManager(layoutManager);
-
-        // Asociamos un adapter (ver más adelante cómo definirlo)
-        rAdapter = new MyAdapter(myDataSet);
-        rView.setAdapter(rAdapter);
-
-
-
+        // Se configura el recycler view
+        RecyclerView.Adapter adapterNotes = new NotesAdapter(dummyData);
+        rView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rView.setAdapter(adapterNotes);
 
     }
 }
