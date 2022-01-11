@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.another.notasapp.adapters.FolderNotesAdapter;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button nextActivity = findViewById(R.id.nextActivity);
         // Se crea una lista de objetos dummy para hacer pruebas
         List<FolderNotes> dummyData = new ArrayList<>();
         FolderNotes folderNotes = new FolderNotes();
@@ -39,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Se notifica el cambio en el adapter
         adapterFolderNotes.notifyDataSetChanged();
+
+        nextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent nextAct = new Intent(MainActivity.this, recyclerNotas.class);
+                startActivity(nextAct);
+
+            }
+        });
     }
 
 
