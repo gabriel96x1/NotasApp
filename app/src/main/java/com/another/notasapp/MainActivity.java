@@ -1,18 +1,27 @@
 package com.another.notasapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.icu.text.CaseMap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.another.notasapp.adapters.FolderNotesAdapter;
+import com.another.notasapp.fragments.AddFolderDialog;
 import com.another.notasapp.models.entity.FolderNotes;
+import com.another.notasapp.models.repository.FolderRepository;
+import com.another.notasapp.models.repository.FolderRepositoryImpl;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +30,32 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class MainActivity extends AppCompatActivity {
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+
+public class MainActivity extends AppCompatActivity implements AddFolderDialog.OnSaveNewFolder{
 
     private RecyclerView recyclerView;
     private AppDatabase db;
-    private Button addButton;
+    private FloatingActionButton addButton;
+    private RecyclerView.Adapter adapterFolderNotes;
+    List<FolderNotes> dummyData;
+    private FolderRepository folderRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "database-name").fallbackToDestructiveMigration().build();
+        addButton = findViewById(R.id.addButton);
+
+        db = AppDatabase.getInstance(this.getApplicationContext());
+        folderRepository = new FolderRepositoryImpl(db.folderDao());
 
         Button nextActivity = findViewById(R.id.nextActivity);
         // Se crea una lista de objetos dummy para hacer pruebas
-        List<FolderNotes> dummyData = null;
+        dummyData = null;
         try {
             dummyData = getFolders();
         } catch (ExecutionException e) {
@@ -46,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Se configura el recycler view
-        RecyclerView.Adapter adapterFolderNotes = new FolderNotesAdapter(dummyData);
+        adapterFolderNotes = new FolderNotesAdapter(dummyData);
         recyclerView = findViewById(R.id.foldersRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapterFolderNotes);
@@ -62,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    AddFolderDialog addFolderDialog = new AddFolderDialog();
+                    addFolderDialog.show(getSupportFragmentManager(), "tag");
+            }
+        });
     }
 
 
@@ -70,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
         Callable< List<FolderNotes>> callable = new Callable<List<FolderNotes>>() {
             @Override
             public  List<FolderNotes> call() throws Exception {
-                return db.folderDao().getAllFolders();
+                List<FolderNotes> folders = folderRepository.getAllFolders();
+                return folders;
             }
         };
         Future<List<FolderNotes>> future = Executors.newSingleThreadExecutor().submit(callable);
@@ -78,6 +106,27 @@ public class MainActivity extends AppCompatActivity {
         return future.get();
     }
 
+    @Override
+    public void onFolderSaved(FolderNotes folderNotes) throws ExecutionException, InterruptedException {
+        //Toast.makeText(this, "Se a notifycado", Toast.LENGTH_SHORT).show();
+        folderRepository.insertFolder(folderNotes);
+        System.out.println("folder notes" + folderNotes.getName());
+        dummyData = getFolders();
+        adapterFolderNotes.notifyDataSetChanged();
 
+        //FolderNotes folderNotes = new FolderNotes();
+        //folderNotes.setName("A");
+        //dummyData.add(folderNotes);
 
+        //Toast.makeText(this, dummyData.get(0).getName(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        if (fragment instanceof AddFolderDialog){
+            AddFolderDialog addFolderDialog = (AddFolderDialog) fragment;
+            addFolderDialog.setOnSaveNewFolder(this);
+        }
+    }
 }

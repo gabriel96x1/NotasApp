@@ -9,7 +9,7 @@ public class FolderNotes {
     @PrimaryKey(autoGenerate = true)
     public int uid;
 
-    @ColumnInfo
+    @ColumnInfo(name = "name")
     public String name;
 
     public int getUid() {
