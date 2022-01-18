@@ -108,17 +108,27 @@ public class MainActivity extends AppCompatActivity implements AddFolderDialog.O
 
     @Override
     public void onFolderSaved(FolderNotes folderNotes) throws ExecutionException, InterruptedException {
-        //Toast.makeText(this, "Se a notifycado", Toast.LENGTH_SHORT).show();
+        // Guarda el nuevo folder
         folderRepository.insertFolder(folderNotes);
-        System.out.println("folder notes" + folderNotes.getName());
-        dummyData = getFolders();
+
+        // Trae todos los folders y toma el ultimo que se agrego
+        FolderNotes newFolder = folderRepository.getAllFolders().get(folderRepository.getAllFolders().size() - 1);
+
+        // Inserta el ultimo folder que se agrego a la base de datos en el recyclerview
+        dummyData.add(newFolder);
+
+        //printAllDataset(dummyData);
+
+        // Notifica al adapter sobre el cambio en el dataset
         adapterFolderNotes.notifyDataSetChanged();
 
-        //FolderNotes folderNotes = new FolderNotes();
-        //folderNotes.setName("A");
-        //dummyData.add(folderNotes);
+    }
 
-        //Toast.makeText(this, dummyData.get(0).getName(), Toast.LENGTH_SHORT).show();
+    void printAllDataset(List<FolderNotes> folderNotes){
+        System.out.println(folderNotes.size());
+        for (int i = 0; i < folderNotes.size(); i++) {
+            System.out.println(folderNotes.get(i).getName());
+        }
 
     }
 
