@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.another.notasapp.R;
 import com.another.notasapp.adapters.FolderNotesAdapter;
 import com.another.notasapp.adapters.NotesAdapter;
 import com.another.notasapp.models.entity.Notes;
@@ -13,7 +14,7 @@ import com.another.notasapp.models.entity.Notes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class recyclerNotas extends AppCompatActivity {
+public class NotesActivity extends AppCompatActivity {
     private RecyclerView rView;
     private NotesAdapter rAdapter;
 
