@@ -33,8 +33,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.i("BindViewHolder", "Se enlaza la vista de " + this.NotesData.get(position).getName());
-        holder.getTextView().setText(this.NotesData.get(position).getName());
+        Log.i("BindViewHolder", "Se enlaza la vista de " + this.NotesData.get(position).getTitle());
+        holder.getTextView().setText(this.NotesData.get(position).getTitle());
     }
 
     @Override

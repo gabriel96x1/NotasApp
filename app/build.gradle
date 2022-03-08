@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 24
 
     defaultConfig {
         applicationId "com.another.notasapp"

@@ -27,8 +27,8 @@ public class recyclerNotas extends AppCompatActivity {
         List<Notes> dummyData = new ArrayList<>();
         Notes Notes = new Notes();
         Notes Notes2 = new Notes();
-        Notes.setName("Nuevo nota");
-        Notes2.setName("Otro nota");
+        Notes.setTitle("Nuevo nota");
+        Notes2.setTitle("Otro nota");
         dummyData.add(Notes);
         dummyData.add(Notes2);
 

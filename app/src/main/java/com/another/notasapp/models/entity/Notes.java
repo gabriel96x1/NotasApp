@@ -10,22 +10,22 @@ public class Notes {
     public int uid;
 
     @ColumnInfo
-    public String name;
+    public String title;
+
+    public String text;
 
     public int getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
+    public void setUid(int uid) { this.uid = uid; }
 
-    public String getName() {
-        return name;
-    }
+    public String getTitle() { return title; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getText() { return text; }
+
+    public void setText(String text) { this.text = text; }
 
 }
